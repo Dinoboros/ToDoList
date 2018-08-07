@@ -13,9 +13,14 @@ class TodolistViewController: UITableViewController {
 
     var itemArray = ["Learn Swift", "Get an iPhone", "Get a iOS developement job", "Be rich"]
     
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        if let items = defaults.array(forKey: "TodolistArray") as? [String] {
+            itemArray = items
+        }
     }
 
     //MARK: - Table view data source methods
@@ -60,6 +65,9 @@ class TodolistViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "Ajoutez la catégorie", style: .default, handler: { (action) in
             if textField.text! != "" {
                 self.itemArray.append(textField.text!)
+                
+                self.defaults.set(self.itemArray, forKey: "TodolistArray")
+                
                 self.tableView.reloadData()
             } else {
                 print("Champ vide !")
